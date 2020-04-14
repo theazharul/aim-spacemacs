@@ -6,23 +6,10 @@
 
 * Package Manager 
 #+BEGIN_SRC emacs-lisp
-;;; init.el --- Initialization file for Emacs
-
-;;; Commentary:
-;; Emacs Startup File --- initialization for Emacs
-
-
-;; Added by Package.el.  This must come before configurations of
-;; installed packages.  Don't delete this line.  If you don't want it,
-;; just comment it out by adding a semicolon to the start of the line.
-;; You may delete these explanatory comments.
 (package-initialize)
 
 (require 'package)
 
-;;; Code:
-
-;;; (setq debug-on-error t)
 (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/") t)
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
 (add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/") t)
@@ -63,6 +50,12 @@
                     :height 150 
                     :weight 'normal
                     :width 'normal)
+  #+END_SRC
+* Multiple cursor
+  #+BEGIN_SRC emacs-lisp
+  (use-package multiple-cursors
+  :config
+  (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines))
   #+END_SRC
 * Menubar, Scrollbar, Toolbar config
   #+BEGIN_SRC emacs-lisp
@@ -149,9 +142,11 @@
   #+BEGIN_SRC emacs-lisp
   (use-package yasnippet
   :config
-  (yas-global-mode 1))
+  (yas-global-mode +1))
   
-  (use-package yasnippet-snippets)
+  (use-package yasnippet-snippets
+  :ensure t
+  :after (yasnippet))
   #+END_SRC
 * Magit
   #+BEGIN_SRC emacs-lisp
@@ -190,10 +185,18 @@
   (add-hook 'typescript-mode-hook 'prettier-js-mode))
   #+END_SRC
 * Elixir Config
+** Install elixir-ls
+***    Clone the elixir-lsp elixir-ls fork locally
+***  ~git clone https://github.com/elixir-lsp/elixir-ls.git~
+***    ~cd elixir-ls~ (that you just cloned)
+***    ~mix deps.get~
+***    ~mix elixir_ls.release~
+    This will create a release/language_server.sh (and .bat for windows) file that you will need for the Emacs integration, so note down this path (referred to later as path-to-elixir-ls/release).
+
+**  Eglot
   #+BEGIN_SRC emacs-lisp
-  (use-package alchemist
-  :config
-  (setq alchemist-key-command-prefix (kbd "C-c a")))
+
+
 
   (use-package flycheck-credo
   :requires flycheck
@@ -211,6 +214,17 @@
                                             (list "--dot-formatter"
                                                   (concat (locate-dominating-file buffer-file-name ".formatter.exs") ".formatter.exs")))
                                     (setq elixir-format-arguments nil)))))
+
+
+  (use-package eglot
+  :config
+  ;; This is optional. It automatically runs `M-x eglot` for you whenever you are in `elixir-mode`
+  (add-hook 'elixir-mode-hook 'eglot-ensure)
+
+  (add-to-list 'eglot-server-programs `(elixir-mode "~/elixir-ls/release/language_server.sh")))
+  
+  (use-package exunit)
+
   #+END_SRC
 * Rust
   #+BEGIN_SRC emacs-lisp
