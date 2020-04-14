@@ -1,0 +1,2 @@
+# aimacs
+My Emacs Configuration
