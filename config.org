@@ -1,0 +1,258 @@
+* Set personal information
+  #+BEGIN_SRC emacs-lisp
+  (setq user-full-name "Azhar Ibn Mostafiz")
+  
+  #+END_SRC
+
+* Package Manager 
+#+BEGIN_SRC emacs-lisp
+;;; init.el --- Initialization file for Emacs
+
+;;; Commentary:
+;; Emacs Startup File --- initialization for Emacs
+
+
+;; Added by Package.el.  This must come before configurations of
+;; installed packages.  Don't delete this line.  If you don't want it,
+;; just comment it out by adding a semicolon to the start of the line.
+;; You may delete these explanatory comments.
+(package-initialize)
+
+(require 'package)
+
+;;; Code:
+
+;;; (setq debug-on-error t)
+(add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/") t)
+(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
+(add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/") t)
+
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
+
+(eval-when-compile
+  (require 'use-package))
+
+(setq use-package-always-ensure t)
+(setq use-package-verbose t)
+  ;; ;; ;; ;; Set up package.el to work with MELPA
+  ;; ;; ;; (require 'package)
+  ;; ;; ;; (add-to-list 'package-archives
+  ;; ;; ;;              '("melpa" . "https://melpa.org/packages/"))
+  ;; ;; ;; (package-initialize)
+  ;; ;; ;; ;;(package-refresh-contents)
+
+#+END_SRC
+* Color Theme
+  #+BEGIN_SRC emacs-lisp
+
+    ;; Download Zenburn-theme 
+    (unless (package-installed-p 'zenburn-theme)
+    (package-install 'zenburn-theme))
+    ;; Enable Zenburn theme
+    (load-theme 'zenburn t)
+
+  #+END_SRC
+* Font config
+  #+BEGIN_SRC emacs-lisp
+  
+;; Set default font
+(set-face-attribute 'default nil
+                    :family "Source Code Pro"
+                    :height 150 
+                    :weight 'normal
+                    :width 'normal)
+  #+END_SRC
+* Menubar, Scrollbar, Toolbar config
+  #+BEGIN_SRC emacs-lisp
+  
+;; Disable Menubar
+(menu-bar-mode -1) 
+;; Disable Scrollbar
+(toggle-scroll-bar -1) 
+;; Disable Toolbar
+(tool-bar-mode -1) 
+  #+END_SRC
+* Flycheck
+  #+BEGIN_SRC emacs-lisp
+  (use-package flycheck
+  :config
+  (add-hook 'after-init-hook #'global-flycheck-mode))
+  #+END_SRC
+* Org-bullet
+  #+BEGIN_SRC emacs-lisp
+
+ (use-package org-bullets 
+  :config
+  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))) 
+
+  #+END_SRC
+* Htmlize
+  #+BEGIN_SRC emacs-lisp
+  (use-package htmlize)
+  #+END_SRC
+* Evil
+  #+BEGIN_SRC emacs-lisp
+  (use-package evil
+  :config
+  (evil-mode 1))
+  #+END_SRC
+* IVY
+  #+BEGIN_SRC emacs-lisp
+    (use-package counsel
+    :init (ivy-mode 1)
+    :config
+    (setq ivy-height 10)
+    (setq ivy-use-virtual-buffers t)
+    (setq ivy-count-format "(%d/%d) ")
+    (global-set-key "\C-s" 'swiper)
+    (setq projectile-completion-system 'ivy)
+    (global-set-key (kbd "C-c C-r") 'ivy-resume)
+    (global-set-key (kbd "C-c e e") 'counsel-ag))
+  #+END_SRC
+* Company Mode
+  #+BEGIN_SRC emacs-lisp
+  (use-package company
+  :config
+  (global-company-mode)
+  (setq company-tooltip-align-annotations t))
+  #+END_SRC
+* NeoTree
+  #+BEGIN_SRC emacs-lisp
+  (use-package neotree
+  :config
+  (global-set-key [f8] 'neotree-toggle)
+  (global-set-key [f9] 'neotree-dir)
+  (add-hook 'neotree-mode-hook
+              (lambda ()
+                (define-key evil-normal-state-local-map (kbd "TAB") 'neotree-enter)
+                (define-key evil-normal-state-local-map (kbd "SPC") 'neotree-quick-look)
+                (define-key evil-normal-state-local-map (kbd "q") 'neotree-hide)
+                (define-key evil-normal-state-local-map (kbd "RET") 'neotree-enter)
+                (define-key evil-normal-state-local-map (kbd "g") 'neotree-refresh)
+                (define-key evil-normal-state-local-map (kbd "n") 'neotree-next-line)
+                (define-key evil-normal-state-local-map (kbd "p") 'neotree-previous-line)
+                (define-key evil-normal-state-local-map (kbd "A") 'neotree-stretch-toggle)
+                (define-key evil-normal-state-local-map (kbd "H") 'neotree-hidden-file-toggle))))
+  #+END_SRC
+
+* Projectile
+  #+BEGIN_SRC emacs-lisp
+    (use-package projectile
+    :config
+    (projectile-mode +1)
+    (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
+    (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map))
+  #+END_SRC
+* Yasnippet
+  #+BEGIN_SRC emacs-lisp
+  (use-package yasnippet
+  :config
+  (yas-global-mode 1))
+  
+  (use-package yasnippet-snippets)
+  #+END_SRC
+* Magit
+  #+BEGIN_SRC emacs-lisp
+  (use-package magit
+  :config
+  (global-set-key (kbd "C-x g") 'magit-status)
+  (global-set-key (kbd "C-x M-g") 'magit-dispatch-popup)
+  (global-magit-file-mode 1))
+  #+END_SRC
+* Restclient
+  #+BEGIN_SRC emacs-lisp
+  (use-package restclient)
+  #+END_SRC
+* Web Mode
+  #+BEGIN_SRC emacs-lisp
+  (use-package web-mode
+  :config
+  (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode)))
+  #+END_SRC
+* JavaScript
+  #+BEGIN_SRC emacs-lisp
+  (use-package js2-mode
+  :mode "\\.js\\'")
+
+  (use-package typescript-mode
+  :mode  ("\\.ts\\'" "\\.tsx\\'"))
+
+  (setq css-indent-offset 2)
+
+  (use-package prettier-js
+  :config
+  (add-hook 'js2-mode-hook 'prettier-js-mode)
+  (add-hook 'web-mode-hook #'(lambda ()
+                               (enable-minor-mode
+                                '(("\\.jsx?\\'" "\\.ts\\'" "\\.tsx\\'") . prettier-js-mode))))
+  (add-hook 'typescript-mode-hook 'prettier-js-mode))
+  #+END_SRC
+* Elixir Config
+  #+BEGIN_SRC emacs-lisp
+  (use-package alchemist
+  :config
+  (setq alchemist-key-command-prefix (kbd "C-c a")))
+
+  (use-package flycheck-credo
+  :requires flycheck
+  :config
+  (flycheck-credo-setup))
+
+  (use-package elixir-mode
+  :config
+  (add-hook 'elixir-mode-hook 'flycheck-mode)
+  (add-hook 'elixir-mode-hook
+            (lambda () (add-hook 'before-save-hook 'elixir-format nil t)))
+  (add-hook 'elixir-format-hook (lambda ()
+                                  (if (projectile-project-p)
+                                      (setq elixir-format-arguments
+                                            (list "--dot-formatter"
+                                                  (concat (locate-dominating-file buffer-file-name ".formatter.exs") ".formatter.exs")))
+                                    (setq elixir-format-arguments nil)))))
+  #+END_SRC
+* Rust
+  #+BEGIN_SRC emacs-lisp
+  (use-package rust-mode
+  :config
+  (add-hook 'racer-mode-hook #'eldoc-mode)
+  (add-hook 'racer-mode-hook #'company-mode)
+  (define-key rust-mode-map (kbd "TAB") #'company-indent-or-complete-common)
+  (setq rust-format-on-save t)
+  (setq rust-indent-offset 4))
+
+(use-package cargo
+  :requires rust-mode
+  :config
+  (add-hook 'rust-mode-hook 'cargo-minor-mode))
+
+  (use-package racer
+  :requires rust-mode
+
+  :init (setq racer-rust-src-path
+              (concat (string-trim
+                       (shell-command-to-string "rustc --print sysroot"))
+                      "/lib/rustlib/src/rust/src"))
+  :after rust-mode
+  :config
+  (add-hook 'rust-mode-hook #'racer-mode))
+  #+END_SRC
+* System generated config 
+  #+BEGIN_SRC emacs-lisp
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   (quote
+    (ob-elixir org-bullets zenburn-theme auto-complete company-mode magit yasnippet-snippets yasnippet web-mode alchemist evil)))
+ '(send-mail-function (quote mailclient-send-it)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
+  #+END_SRC
