@@ -4,6 +4,7 @@
   
   #+END_SRC
 
+
 * Package Manager 
 #+BEGIN_SRC emacs-lisp
 (package-initialize)
@@ -25,26 +26,43 @@
 (setq use-package-verbose t)
 
 #+END_SRC
-* Color Theme
-  #+BEGIN_SRC emacs-lisp
 
-    ;; Download Zenburn-theme 
-    (unless (package-installed-p 'zenburn-theme)
-    (package-install 'zenburn-theme))
-    ;; Enable Zenburn theme
-    (load-theme 'zenburn t)
+* Common Config
+** Color Theme
+   #+BEGIN_SRC emacs-lisp
 
-  #+END_SRC
-* Font config
-  #+BEGIN_SRC emacs-lisp
+     ;; Download Zenburn-theme 
+     (unless (package-installed-p 'zenburn-theme)
+     (package-install 'zenburn-theme))
+     ;; Enable Zenburn theme
+     (load-theme 'zenburn t)
+
+   #+END_SRC
+** Font config
+   #+BEGIN_SRC emacs-lisp
   
-;; Set default font
-(set-face-attribute 'default nil
-                    :family "Source Code Pro"
-                    :height 150 
-                    :weight 'normal
-                    :width 'normal)
-  #+END_SRC
+ ;; Set default font
+ (set-face-attribute 'default nil
+                     :family "Source Code Pro"
+                     :height 150 
+                     :weight 'normal
+                     :width 'normal)
+   #+END_SRC
+** Menubar, Scrollbar, Toolbar config
+   #+BEGIN_SRC emacs-lisp
+  
+ ;; Disable Menubar
+ (menu-bar-mode -1) 
+ ;; Disable Scrollbar
+ (toggle-scroll-bar -1) 
+ ;; Disable Toolbar
+ (tool-bar-mode -1) 
+   #+END_SRC
+** Parenthesis Completion
+#+BEGIN_SRC emacs-lisp
+(electric-pair-mode 1)
+#+END_SRC
+
 * Multiple cursor
   #+BEGIN_SRC emacs-lisp
   (use-package evil-mc 
@@ -52,22 +70,14 @@
   (global-evil-mc-mode  1))
 
   #+END_SRC
-* Menubar, Scrollbar, Toolbar config
-  #+BEGIN_SRC emacs-lisp
-  
-;; Disable Menubar
-(menu-bar-mode -1) 
-;; Disable Scrollbar
-(toggle-scroll-bar -1) 
-;; Disable Toolbar
-(tool-bar-mode -1) 
-  #+END_SRC
+
 * Flycheck
   #+BEGIN_SRC emacs-lisp
   (use-package flycheck
   :config
   (add-hook 'after-init-hook #'global-flycheck-mode))
   #+END_SRC
+
 * Org Mode
 ** Basic config
   #+BEGIN_SRC emacs-lisp
@@ -97,7 +107,7 @@
           ("l" "Learn" entry (file+headline "~/Dropbox/org/Learn.org" "Learn")
            "* %? \n")
           ("w" "Work note" entry (file+headline "~/Dropbox/org/work.org" "Work")
-           "* %? \n")
+           "* %? \n")))
   (setq org-modules
         (quote
          (org-bbdb org-bibtex org-docview org-gnus org-habit org-info org-irc org-mhe org-rmail org-w3m))))
@@ -133,16 +143,19 @@
   (setq org-agenda-files (append org-agenda-files (org-projectile-todo-files)))
   (global-set-key (kbd "C-c n p") 'org-projectile-project-todo-completing-read))
 #+END_SRC
+
 * Htmlize
   #+BEGIN_SRC emacs-lisp
   (use-package htmlize)
   #+END_SRC
+
 * Evil
   #+BEGIN_SRC emacs-lisp
   (use-package evil
   :config
   (evil-mode 1))
   #+END_SRC
+
 * Evil Surround
 #+BEGIN_SRC emacs-lisp
 (use-package evil-surround
@@ -150,6 +163,7 @@
   :config
   (global-evil-surround-mode 1))
 #+END_SRC
+
 * IVY
   #+BEGIN_SRC emacs-lisp
     (use-package counsel
@@ -163,6 +177,7 @@
     (global-set-key (kbd "C-c C-r") 'ivy-resume)
     (global-set-key (kbd "C-c e e") 'counsel-ag))
   #+END_SRC
+
 * Company Mode
   #+BEGIN_SRC emacs-lisp
   (use-package company
@@ -170,6 +185,7 @@
   (global-company-mode)
   (setq company-tooltip-align-annotations t))
   #+END_SRC
+
 * NeoTree
   #+BEGIN_SRC emacs-lisp
   (use-package neotree
@@ -190,6 +206,7 @@
                 (define-key evil-normal-state-local-map (kbd "H") 'neotree-hidden-file-toggle))))
   #+END_SRC
 
+
 * Projectile
   #+BEGIN_SRC emacs-lisp
     (use-package projectile
@@ -199,6 +216,7 @@
     (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map))
     (setq projectile-switch-project-action 'neotree-projectile-action)
   #+END_SRC
+
 * Yasnippet
   #+BEGIN_SRC emacs-lisp
   (use-package yasnippet
@@ -209,6 +227,7 @@
   :ensure t
   :after (yasnippet))
   #+END_SRC
+
 * Magit
   #+BEGIN_SRC emacs-lisp
   (use-package magit
@@ -217,10 +236,12 @@
   (global-set-key (kbd "C-x M-g") 'magit-dispatch-popup)
   (global-magit-file-mode 1))
   #+END_SRC
+
 * Restclient
   #+BEGIN_SRC emacs-lisp
   (use-package restclient)
   #+END_SRC
+
 * Web Mode
   #+BEGIN_SRC emacs-lisp
   (use-package web-mode
@@ -228,6 +249,7 @@
   (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
   (add-to-list 'auto-mode-alist '("\\.eex?\\'" . web-mode)))
   #+END_SRC
+
 * JavaScript
   #+BEGIN_SRC emacs-lisp
   (use-package js2-mode
@@ -246,6 +268,7 @@
                                 '(("\\.jsx?\\'" "\\.ts\\'" "\\.tsx\\'") . prettier-js-mode))))
   (add-hook 'typescript-mode-hook 'prettier-js-mode))
   #+END_SRC
+
 * Elixir Config
 ** Install elixir-ls
 ***    Clone the elixir-lsp elixir-ls fork locally
@@ -288,6 +311,7 @@
   (use-package exunit)
 
   #+END_SRC
+
 * Rust
   #+BEGIN_SRC emacs-lisp
   (use-package rust-mode
