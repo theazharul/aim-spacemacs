@@ -23,12 +23,6 @@
 
 (setq use-package-always-ensure t)
 (setq use-package-verbose t)
-  ;; ;; ;; ;; Set up package.el to work with MELPA
-  ;; ;; ;; (require 'package)
-  ;; ;; ;; (add-to-list 'package-archives
-  ;; ;; ;;              '("melpa" . "https://melpa.org/packages/"))
-  ;; ;; ;; (package-initialize)
-  ;; ;; ;; ;;(package-refresh-contents)
 
 #+END_SRC
 * Color Theme
@@ -53,9 +47,10 @@
   #+END_SRC
 * Multiple cursor
   #+BEGIN_SRC emacs-lisp
-  (use-package multiple-cursors
+  (use-package evil-mc 
   :config
-  (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines))
+  (global-evil-mc-mode  1))
+
   #+END_SRC
 * Menubar, Scrollbar, Toolbar config
   #+BEGIN_SRC emacs-lisp
@@ -73,7 +68,45 @@
   :config
   (add-hook 'after-init-hook #'global-flycheck-mode))
   #+END_SRC
-* Org-bullet
+* Org Mode
+** Basic config
+  #+BEGIN_SRC emacs-lisp
+  (use-package org
+  :demand t
+  :mode (("\\.org$" . org-mode))
+  :init
+  (setq org-agenda-files (list "~/Dropbox/org/"))
+  (setq org-refile-targets '((org-agenda-files :maxlevel . 3)))
+  :config
+  (global-set-key "\C-cl" 'org-store-link)
+  (global-set-key "\C-ca" 'org-agenda)
+  (global-set-key "\C-cb" 'org-switchb)
+  (global-set-key "\C-cc" 'org-capture)
+  (global-set-key "\C-cw" 'org-time-stamp-inactive)
+  (setq org-log-done t)
+  (setq org-use-speed-commands t)
+  (setq org-return-follows-link t)
+  (setq org-enforce-todo-dependencies t)
+  (setq org-habit-show-habits-only-for-today nil)
+  (setq org-archive-location "~/Dropbox/org/archive/Archive.org::* From %s")
+  (setq org-capture-templates
+        '(("t" "Todo" entry (file+headline "~/Dropbox/org/Todo.org" "Todo")
+           "* TODO %? \n  %^t")
+          ("i" "Idea" entry (file+headline "~/Dropbox/org/Ideas.org" "Ideas")
+           "* %? \n %U")
+          ("l" "Learn" entry (file+headline "~/Dropbox/org/Learn.org" "Learn")
+           "* %? \n")
+          ("w" "Work note" entry (file+headline "~/Dropbox/org/work.org" "Work")
+           "* %? \n")
+  (setq org-modules
+        (quote
+         (org-bbdb org-bibtex org-docview org-gnus org-habit org-info org-irc org-mhe org-rmail org-w3m))))
+
+
+  #+END_SRC
+
+
+** Org-bullet
   #+BEGIN_SRC emacs-lisp
 
  (use-package org-bullets 
@@ -81,6 +114,25 @@
   (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))) 
 
   #+END_SRC
+** Org Journal
+   #+BEGIN_SRC emacs-lisp
+   
+(use-package org-journal)
+
+   #+END_SRC
+** Org Projectile
+#+BEGIN_SRC emacs-lisp
+
+(use-package org-projectile
+  :after org
+  :after projectile
+  :config
+  (setq org-projectile-projects-file
+        "~/.org/project_todos.org")
+  (push (org-projectile-project-todo-entry) org-capture-templates)
+  (setq org-agenda-files (append org-agenda-files (org-projectile-todo-files)))
+  (global-set-key (kbd "C-c n p") 'org-projectile-project-todo-completing-read))
+#+END_SRC
 * Htmlize
   #+BEGIN_SRC emacs-lisp
   (use-package htmlize)
@@ -91,6 +143,13 @@
   :config
   (evil-mode 1))
   #+END_SRC
+* Evil Surround
+#+BEGIN_SRC emacs-lisp
+(use-package evil-surround
+  :ensure t
+  :config
+  (global-evil-surround-mode 1))
+#+END_SRC
 * IVY
   #+BEGIN_SRC emacs-lisp
     (use-package counsel
@@ -117,6 +176,7 @@
   :config
   (global-set-key [f8] 'neotree-toggle)
   (global-set-key [f9] 'neotree-dir)
+  (setq neo-smart-open t)
   (add-hook 'neotree-mode-hook
               (lambda ()
                 (define-key evil-normal-state-local-map (kbd "TAB") 'neotree-enter)
@@ -137,6 +197,7 @@
     (projectile-mode +1)
     (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
     (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map))
+    (setq projectile-switch-project-action 'neotree-projectile-action)
   #+END_SRC
 * Yasnippet
   #+BEGIN_SRC emacs-lisp
@@ -164,7 +225,8 @@
   #+BEGIN_SRC emacs-lisp
   (use-package web-mode
   :config
-  (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode)))
+  (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.eex?\\'" . web-mode)))
   #+END_SRC
 * JavaScript
   #+BEGIN_SRC emacs-lisp
