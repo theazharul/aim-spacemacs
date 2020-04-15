@@ -1,7 +1,7 @@
 * Set personal information
   #+BEGIN_SRC emacs-lisp
-  (setq user-full-name "Azhar Ibn Mostafiz")
-  
+  (setq user-full-name "Azhar Ibn Mostafiz"
+  user-mail-address "theazharul@gmail.com")
   #+END_SRC
 
 
@@ -62,7 +62,31 @@
 #+BEGIN_SRC emacs-lisp
 (electric-pair-mode 1)
 #+END_SRC
+** Backup Directory 
+#+BEGIN_SRC emacs-lisp
+(setq backup-directory-alist '(("." . "~/.emacs.d/emacs_backup")))
+#+END_SRC
+** Date time battery life 
+#+BEGIN_SRC emacs-lisp
+(setq display-time-day-and-date t)
+(display-time)
 
+;; (display-battery-mode 1)
+;; Nope; let's use a fancy indicator …
+
+(use-package fancy-battery
+  :diminish
+  :config
+    (setq fancy-battery-show-percentage t)
+    (setq battery-update-interval 15)
+    (fancy-battery-mode)
+    (display-battery-mode)
+)
+#+END_SRC
+* GNUS 
+  #+BEGIN_SRC emacs-lisp
+  (setq message-send-mail-function 'smtpmail-send-it)
+  #+END_SRC
 * Multiple cursor
   #+BEGIN_SRC emacs-lisp
   (use-package evil-mc 
