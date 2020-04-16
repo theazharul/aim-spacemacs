@@ -28,6 +28,11 @@
 #+END_SRC
 
 * Common Config
+** Language environment 
+#+BEGIN_SRC emacs-lisp
+(set-language-environment "UTF-8")
+(set-default-coding-systems 'utf-8)
+#+END_SRC
 ** Color Theme
    #+BEGIN_SRC emacs-lisp
 
@@ -167,7 +172,10 @@
   (setq org-agenda-files (append org-agenda-files (org-projectile-todo-files)))
   (global-set-key (kbd "C-c n p") 'org-projectile-project-todo-completing-read))
 #+END_SRC
-
+** Evil Org 
+   #+BEGIN_SRC emacs-lisp
+   (use-package evil-org)
+   #+END_SRC
 * Htmlize
   #+BEGIN_SRC emacs-lisp
   (use-package htmlize)
@@ -266,12 +274,23 @@
   (use-package restclient)
   #+END_SRC
 
+
+* Emmet Mode 
+  #+BEGIN_SRC emacs-lisp
+  (use-package emmet-mode
+  :config
+  (add-hook 'sgml-mode-hook 'emmet-mode) ;; Auto-start on any markup modes
+  (add-hook 'css-mode-hook  'emmet-mode) ;; enable Emmet's css abbreviation.
+  )
+  
+  #+END_SRC
 * Web Mode
   #+BEGIN_SRC emacs-lisp
   (use-package web-mode
   :config
   (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
-  (add-to-list 'auto-mode-alist '("\\.eex?\\'" . web-mode)))
+  (add-to-list 'auto-mode-alist '("\\.eex?\\'" . web-mode))
+  (add-hook 'web-mode-hook 'emmet-mode))
   #+END_SRC
 
 * JavaScript
