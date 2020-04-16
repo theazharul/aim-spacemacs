@@ -33,6 +33,20 @@
 (set-language-environment "UTF-8")
 (set-default-coding-systems 'utf-8)
 #+END_SRC
+
+** Backup and Auto Save Directory 
+#+BEGIN_SRC emacs-lisp
+  ;; Save all tempfiles in $TMPDIR/emacs$UID/                                                        
+      ;; (defconst emacs-tmp-dir (expand-file-name (format "emacs%d" (user-uid)) temporary-file-directory))
+      (defconst emacs-tmp-dir "~/.emacs.d/.emacs-backups/")
+      (setq backup-directory-alist
+	  `((".*" . ,emacs-tmp-dir)))
+      (setq auto-save-file-name-transforms
+	  `((".*" ,emacs-tmp-dir t)))
+      (setq auto-save-list-file-prefix
+	  emacs-tmp-dir)
+#+END_SRC
+
 ** Color Theme
    #+BEGIN_SRC emacs-lisp
 
@@ -66,10 +80,6 @@
 ** Parenthesis Completion
 #+BEGIN_SRC emacs-lisp
 (electric-pair-mode 1)
-#+END_SRC
-** Backup Directory 
-#+BEGIN_SRC emacs-lisp
-(setq backup-directory-alist '(("." . "~/.emacs.d/emacs_backup")))
 #+END_SRC
 ** Date time battery life 
 #+BEGIN_SRC emacs-lisp
