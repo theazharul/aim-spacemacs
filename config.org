@@ -98,6 +98,18 @@
     (display-battery-mode)
 )
 #+END_SRC
+** Dash
+   #+BEGIN_SRC emacs-lisp
+   (use-package dash)
+   #+END_SRC
+** S
+   #+BEGIN_SRC emacs-lisp
+   (use-package s)
+   #+END_SRC
+** Origami Mode
+   #+BEGIN_SRC emacs-lisp
+   (use-package origami)
+   #+END_SRC
 * GNUS 
   #+BEGIN_SRC emacs-lisp
   (setq message-send-mail-function 'smtpmail-send-it)
@@ -192,11 +204,13 @@
   #+END_SRC
 
 * Evil
-  #+BEGIN_SRC emacs-lisp
-  (use-package evil
+#+BEGIN_SRC emacs-lisp
+
+(use-package evil
   :config
   (evil-mode 1))
-  #+END_SRC
+
+#+END_SRC
 
 * Evil Surround
 #+BEGIN_SRC emacs-lisp
@@ -255,8 +269,8 @@
     :config
     (projectile-mode +1)
     (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
-    (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map))
-    (setq projectile-switch-project-action 'neotree-projectile-action)
+    (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+    (setq projectile-switch-project-action 'neotree-projectile-action))
   #+END_SRC
 
 * Yasnippet
@@ -300,6 +314,7 @@
   :config
   (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
   (add-to-list 'auto-mode-alist '("\\.eex?\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.svelte?\\'" . web-mode))
   (add-hook 'web-mode-hook 'emmet-mode))
   #+END_SRC
 
