@@ -16,7 +16,7 @@
 - [[#key-bindings][Key bindings]]
 
 * Description
-This layer adds support for something.
+My Spacemacs configuration layer.
 
 ** Features:
   - Autocomplete
