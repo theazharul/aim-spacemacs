@@ -3,16 +3,28 @@
    ivy
    auto-completion
    better-defaults
+   (elm :variables
+        ;; elm-format-command "elm-format-0.8.4"
+        elm-format-on-save t
+        elm-backend 'lsp)
+
    emacs-lisp
    (org :variables
-        org-agenda-files (list "~/Dropbox/org/")
-        org-archive-location "~/Dropbox/org/archive/Archive.org::* From %s"
+        ;; TODO Keywords
+        org-todo-keywords
+        (quote ((sequence "TODO(t)" "IN_PROGRESS(i)" "|" "DONE(d)")
+                (sequence "WAITING(w@/)" "DELEGATED(D)" "HOLD(h@/)" "|" "CANCELLED(c@/)")))
+        create-lockfiles nil
+        org-agenda-files (list "~/Dropbox/aimorg/")
+        org-archive-location "~/Dropbox/aimorg/archive/Archive.org::* From %s"
         org-capture-templates
-        '(("t" "Todo" entry (file+headline "~/Dropbox/org/Todo.org" "Todo")
+        '(("t" "Todo" entry (file+headline "~/Dropbox/aimorg/Todo.org" "Todo")
            "* TODO %? \n  %^t")
-          ("i" "Idea" entry (file+headline "~/Dropbox/org/Ideas.org" "Ideas")
+          ("i" "Idea" entry (file+headline "~/Dropbox/aimorg/Ideas.org" "Ideas")
            "* %? \n %U")
-          ("l" "Learn" entry (file+headline "~/Dropbox/org/Learn.org" "Learn")
+          ("l" "Learn" entry (file+headline "~/Dropbox/aimorg/Learn.org" "Learn")
+           "* %? \n")
+          ("r" "Research" entry (file+headline "~/Dropbox/aimorg/Research.org" "Research")
            "* %? \n"))
         )
    evil-commentary
